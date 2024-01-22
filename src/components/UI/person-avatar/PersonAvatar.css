@@ -1,0 +1,11 @@
+.person_avatar_wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    margin-left: -100px;
+}
+  
+  .person_avatar{
+   width: 32px;
+   height: 100%;
+  }
