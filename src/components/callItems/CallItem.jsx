@@ -48,7 +48,7 @@ export default function CallItem({ data, index }) {
           </td>
         </tr>
       ) : ( current_date = data.date_notime,
-        <tr className="yesterday"> Вчера <span>{index}</span> </tr>
+        <tr className="yesterday"> Вчера <span>({data.results.length-index})</span> </tr>
       )}
     </table>
   );
