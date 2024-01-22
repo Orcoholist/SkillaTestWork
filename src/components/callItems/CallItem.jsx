@@ -20,16 +20,14 @@ export default function CallItem({ data, index }) {
     setShowRecord(!showRecord);
   };
 
-    const today2 = data.date_notime
-    console.log(today2);    
-  const today = moment();
-  const todayTimstamp = moment.utc(today).valueOf();
-  // console.log(todayTimstamp);
+
+  let current_date = data.date_notime
+  // console.log(current_date === data.date_notime);
 
   return (
     <table className="callLine" onClick={() => handlerGetRecord()}>
       <span className="line"></span>
-      {today !== moment.utc(data.date_notime).valueOf() ? (
+      {current_date === (data.date_notime) ? (
         <tr className="callLine_row">
           <td className="type">
             <TypeColor data={data.in_out} />
@@ -49,8 +47,8 @@ export default function CallItem({ data, index }) {
             )}
           </td>
         </tr>
-      ) : (
-        <tr className="yesterday"> Вчера ({index}) </tr>
+      ) : ( current_date = data.date_notime,
+        <tr className="yesterday"> Вчера <span>{index}</span> </tr>
       )}
     </table>
   );
