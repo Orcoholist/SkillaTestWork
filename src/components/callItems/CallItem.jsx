@@ -20,36 +20,31 @@ export default function CallItem({ data, index }) {
     setShowRecord(!showRecord);
   };
 
-
-  let current_date = data.date_notime
+  let current_date = data.date_notime;
   // console.log(current_date === data.date_notime);
 
   return (
     <table className="callLine" onClick={() => handlerGetRecord()}>
       <span className="line"></span>
-      {current_date === (data.date_notime) ? (
-        <tr className="callLine_row">
-          <td className="type">
-            <TypeColor data={data.in_out} />
-          </td>
-          <td className="time">{hoursUtc === null ? "" : hoursUtc}</td>
-          <td className="avatar">
-            <PersonAvatar avatar={data.person_avatar} />
-          </td>
-          <td className="call">{phone}</td>
-          <td className="source">{data.source}</td>
-          <td className="rating">
-            <Rating in_out={data} />
-          </td>
-          <td className="duration">
-            {showRecord && (
-              <Record recordId={data.id} partnerId={data.partnership_id} />
-            )}
-          </td>
-        </tr>
-      ) : ( current_date = data.date_notime,
-        <tr className="yesterday"> Вчера <span>({data.results.length-index})</span> </tr>
-      )}
+      <tr className="callLine_row">
+        <td className="type">
+          <TypeColor data={data.in_out} />
+        </td>
+        <td className="time">{hoursUtc === null ? "" : hoursUtc}</td>
+        <td className="avatar">
+          <PersonAvatar avatar={data.person_avatar} />
+        </td>
+        <td className="call">{phone}</td>
+        <td className="source">{data.source}</td>
+        <td className="rating">
+          <Rating in_out={data} />
+        </td>
+        <td className="duration">
+          {showRecord && (
+            <Record recordId={data.id} partnerId={data.partnership_id} />
+          )}
+        </td>
+      </tr>
     </table>
   );
 }

@@ -15,7 +15,6 @@ export default function CallItems({ data, update }) {
     return <p>Loading...</p>;
   }
 
-
   const compare = (a, b) => {
     let dateA = new Date(a.date);
     let dateB = new Date(b.date);
@@ -27,20 +26,21 @@ export default function CallItems({ data, update }) {
     }
   };
   const sortByTime = () => {
-    console.log("sorting", sortOrder)
+    // console.log("sorting", sortOrder);
     setSortedData(sortedData.sort(compare));
     setSortOrder(sortOrder === "ASC" ? "DESC" : "ASC");
-    
   };
 
   const sortByDuration = (data) => {
     // return data.sort((a, b) => a.duration - b.duration);
     //  setSortedData(data)
   };
-  
+
+  let currentDate = null;
+  console.log("currentDate", currentDate);
+
   return (
     <table className="table-header">
-   
       <tr>
         <th className="type">Тип</th>
         <th className="time">
@@ -62,10 +62,30 @@ export default function CallItems({ data, update }) {
       <tbody className="table-body">
         <tr>
           <td>
-            {sortedData.map((call, index) => (      
-                                              
-              <CallItem data={call} update={update} key={index} index={index} /> 
-            ))}
+            {sortedData.map((call, index) => {
+              if (currentDate !== call.date_notime && index !== 0) {
+                currentDate = call.date_notime;
+                return (
+                  <tr key={index} className="yesterday">
+                    <td >
+                      {" "}
+                      {/* Установите правильное количество столбцов */}
+                      Вчера <span>({sortedData.length - index})</span>
+                    </td>
+                  </tr>
+                );
+              } else {
+                currentDate = call.date_notime;
+                return (
+                  <CallItem
+                    data={call}
+                    update={update}
+                    key={index}
+                    index={index}
+                  />
+                );
+              }
+            })}
           </td>
         </tr>
       </tbody>
