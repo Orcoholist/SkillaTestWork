@@ -99,15 +99,18 @@
 }
 
 .yesterday {
+  position: relative;
+  display: flex;
   color: var(--text, #122945); 
   font-size: 15px;    
   line-height: 145%; 
   letter-spacing: 0.15px;
   padding-left: 40px;
 }
-.yesterday span{
+.yesterday span{  
   position: absolute;
   font-size: 12px;
-  padding: -10px 1px 10px 0px;
+  top: -3px;
+  right: -15px;
   color: var(--secondary-color);
 }
