@@ -67,9 +67,8 @@ export default function CallItems({ data, update }) {
                 currentDate = call.date_notime;
                 return (
                   <tr key={index} className="yesterday">
-                    <td >
+                    <td>
                       {" "}
-                      {/* Установите правильное количество столбцов */}
                       Вчера <span>({sortedData.length - index})</span>
                     </td>
                   </tr>
