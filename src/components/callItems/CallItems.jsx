@@ -61,16 +61,35 @@ export default function CallItems({ data, update }) {
       {/* </thead> */}
 
       <tbody className="table-body">
-        <tr >
+        <tr>
           <td>
             {sortedData.map((call, index) => {
-              if (currentDate !== call.date_notime && index !== 0) {
+              if (
+                currentDate !== call.date_notime &&
+                index !== 0 &&
+                !yesterdayFlag
+              ) {
                 currentDate = call.date_notime;
-                return (                  
-                  <tr key={index} >
+                yesterdayFlag = true;
+                return (
+                  <tr key={index}>
                     <td className="yesterday">
                       {" "}
                       Вчера <span>{sortedData.length - index}</span>
+                    </td>
+                  </tr>
+                );
+              } else if (
+                currentDate !== call.date_notime &&
+                index !== 0 &&
+                yesterdayFlag
+              ) {
+                currentDate = call.date_notime;
+                return (
+                  <tr key={index}>
+                    <td className="yesterday">
+                      {call.date_notime}
+                      <span> {sortedData.length - index}</span>
                     </td>
                   </tr>
                 );
