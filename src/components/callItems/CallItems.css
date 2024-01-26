@@ -111,6 +111,6 @@
   position: absolute;
   font-size: 12px;
   top: -3px;
-  right: -15px;
-  color: var(--secondary-color);
+  right: -20px;
+  color: var(--secondary-color);  
 }

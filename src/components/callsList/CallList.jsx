@@ -5,6 +5,8 @@ import SelectType from "../UI/select/SelectType";
 import CallItems from "../callItems/CallItems";
 import { stepTypes, types, inOutByType } from "../../assets/constants";
 import Refresh from "../UI/refresh/Refresh";
+import { fetchCallList } from "../../Api/FetchData.js";
+import moment from "moment";
 
 const CallsList = () => {
   const [data, setData] = useState([]);
@@ -15,45 +17,66 @@ const CallsList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const currentInOut = inOutByType[type];
+  const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
+  // const date_start = new Date().toISOString().slice(0, 10);
+  const date_end = new Date().toISOString().slice(0, 10);
+  const date_start = moment(Date.now() - 3 * 24 * 3600 * 1000).format('YYYY-MM-DD'); 
+  console.log(date_start,date_end)
+  
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const currentInOut = inOutByType[type];
-      const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
-      try {
-        const response = await fetch(
-          `https://api.skilla.ru/mango/getList?${in_out}`,
-          {
-            headers: {
-              Authorization: "Bearer testtoken",
-            },
-            method: "POST",
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const jsonData = await response.json();
-        setData(jsonData.results);
-        console.log(jsonData);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
+      fetchCallList(date_start, date_end, in_out).then((data) => {
+        console.log(data.results);
+        setData(data.results);
+      });
     };
-    setToggleRefresh(true);
-    fetchData();
     
-  }, [type]);
+    fetchData();
+  }, [date_start, date_end, in_out]);
+
+  // useEffect(() => {
+  //   const fetchData = async ( ) => {
+  //     setIsLoading(true);
+  //     const currentInOut = inOutByType[type];
+  //     const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
+  //     const date_start = new Date().toISOString().slice(0, 10);
+  //     const date_end = new Date().toISOString().slice(0, 10);
+
+  //     try {
+  //       const response = await fetch(
+  //         // `https://api.skilla.ru/mango/getList?${in_out}&limit=500`,
+  //         `https://api.skilla.ru/mango/getList?date_start=${date_start}&date_end=${date_end}&in_out=${in_out}`,
+  //         {
+  //           headers: {
+  //             Authorization: "Bearer testtoken",
+  //           },
+  //           method: "POST",
+  //         }
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       const jsonData = await response.json();
+  //       setData(jsonData.results);
+
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   setToggleRefresh(true);
+  //   fetchData();
+  // }, [type]);
 
   const handleToggleRefresh = () => {
     setToggleRefresh(!toggleRefresh);
   };
   const handleRefresh = () => {
     handleToggleRefresh();
-    setType("all");  
-  
+    setType("all");
   };
 
   return (
@@ -68,11 +91,7 @@ const CallsList = () => {
           defaultValue={type}
         />
         <div className="call-list__refresh" onClick={handleRefresh}>
-          {type !== "all" && toggleRefresh ? (
-            <Refresh  />
-          ) : (
-            ""
-          )}
+          {type !== "all" && toggleRefresh ? <Refresh /> : ""}
         </div>
         <Step step={step} options={stepTypes} onChange={setStep} />
       </div>

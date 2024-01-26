@@ -37,7 +37,8 @@ export default function CallItems({ data, update }) {
   };
 
   let currentDate = null;
-  console.log("currentDate", currentDate);
+  let yesterdayFlag = false;
+  // console.log("currentDate", currentDate);
 
   return (
     <table className="table-header">
@@ -65,7 +66,7 @@ export default function CallItems({ data, update }) {
             {sortedData.map((call, index) => {
               if (currentDate !== call.date_notime && index !== 0) {
                 currentDate = call.date_notime;
-                return (
+                return (                  
                   <tr key={index} >
                     <td className="yesterday">
                       {" "}

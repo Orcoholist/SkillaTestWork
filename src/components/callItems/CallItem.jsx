@@ -6,7 +6,8 @@ import Record from "../UI/record/Record";
 import moment from "moment";
 import PersonAvatar from "../UI/person-avatar/PersonAvatar";
 
-export default function CallItem({ data, index }) {
+export default function CallItem({ data, index} ) {
+  // console.log(data);
   let fullDateUtc = moment(data.date);
   let hoursUtc = fullDateUtc.format("HH:mm");
   let phone = `+7(${data.partner_data.phone.slice(
