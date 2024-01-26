@@ -21,10 +21,29 @@ const CallsList = () => {
   const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
   // const date_start = new Date().toISOString().slice(0, 10);
   const date_end = new Date().toISOString().slice(0, 10);
-  const date_start = moment(Date.now() - 3 * 24 * 3600 * 1000).format('YYYY-MM-DD'); 
+  let date_start = moment(Date.now() - 3 * 24 * 3600 * 1000).format('YYYY-MM-DD'); 
+
+  if ( step === "day" ) {
+      date_start = moment(Date.now() - 3 * 24 * 3600 * 1000).format('YYYY-MM-DD');
+    } else if ( step === "week" ) {
+      date_start = moment(Date.now() - 7 * 24 * 3600 * 1000).format('YYYY-MM-DD');
+    } else if ( step === "month" ) {
+      date_start = moment(Date.now() - 30 * 24 * 3600 * 1000).format('YYYY-MM-DD');
+    } else if ( step === "year" ) {
+      date_start = moment(Date.now() - 365 * 24 * 3600 * 1000).format('YYYY-MM-DD');
+    }
+
+
   console.log(date_start,date_end)
-  
+
+
+
   useEffect(() => {
+
+  
+    
+
+
     const fetchData = async () => {
       setIsLoading(true);
       fetchCallList(date_start, date_end, in_out).then((data) => {
