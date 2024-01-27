@@ -5,20 +5,23 @@ import { stepTypes } from "../../../assets/constants";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from "date-fns/locale";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 
 registerLocale("ru", ru);
 
-const Step = ({ step, options, onChange }) => {
+const Step = ({ step, options, onChange , onStep}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(false);
   const [stepValue, setStepValue] = useState(step);
   const [dayPickerisActive, setDayPickerisActive] = useState(false);
   const [startDate, setStartDate] = useState("__.__.___");
   const [endDate, setEndDate] = useState("__.__.___");
-  const [selectedDay, setSelectedDay] = useState(undefined);
-  const [selectedDays, setSelectedDays] = useState([]);
 
+  const handleStep = (value) => {
+    setStepValue(value);
+    onChange(stepValue);
+    console.log("stepValue", stepValue);
+  };
   const handleDayStart = (date) => {
     console.log("date", date);
     setStartDate(date.toLocaleDateString());
@@ -42,14 +45,16 @@ const Step = ({ step, options, onChange }) => {
     console.log(innerText);
   };
 
-  const handlePlus = () => {
+  const handlePlus = (value) => {
+    setStepValue(value);     
     onChange(step);
-    console.log("plus" + step);
+    onStep("plus");
   };
 
-  const handleMinus = () => {
-    onChange(step);
-    console.log("minus" + step);
+  const handleMinus = (value) => {
+    setStepValue(value);
+    onChange(step);  
+    onStep("minus");
   };
 
   const handleDatePicker = () => {
@@ -76,9 +81,7 @@ const Step = ({ step, options, onChange }) => {
                 {" "}
                 <span> {startDate} </span> - <span> {endDate} </span>
               </p>
-              {/* {selectedDate && (
-                <p>Выбранная дата: {selectedDate.toLocaleDateString()}</p>
-              )} */}
+
               <img
                 src={iconCalendar}
                 className="iconCalendar"
@@ -87,9 +90,7 @@ const Step = ({ step, options, onChange }) => {
             </li>
 
             {dayPickerisActive && (
-              <div
-                style={{ width: "50%", minWidth: "100px", maxWidth: "500px" }}
-              >
+              <div>
                 <DatePicker
                   value={startDate}
                   onChange={handleDayStart}

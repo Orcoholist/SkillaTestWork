@@ -12,6 +12,7 @@ const CallsList = () => {
   const [data, setData] = useState([]);
   const [type, setType] = useState("all");
   const [step, setStep] = useState("day");
+  const [stepper, setStepper] = useState("day");
   const [toggleRefresh, setToggleRefresh] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -19,74 +20,31 @@ const CallsList = () => {
 
   const currentInOut = inOutByType[type];
   const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
-  // const date_start = new Date().toISOString().slice(0, 10);
-  const date_end = new Date().toISOString().slice(0, 10);
-  let date_start = moment(Date.now() - 3 * 24 * 3600 * 1000).format(
-    "YYYY-MM-DD"
-  );
+
+  let date_end = moment().format("YYYY-MM-DD");
+  let date_start = moment();
 
   if (step === "day") {
-    date_start = moment(Date.now() - 3 * 24 * 3600 * 1000).format("YYYY-MM-DD");
+    date_start = moment(date_start).subtract(3, "days").format("YYYY-MM-DD");
   } else if (step === "week") {
-    date_start = moment(Date.now() - 7 * 24 * 3600 * 1000).format("YYYY-MM-DD");
+    date_start = moment(date_start).subtract(7, "days").format("YYYY-MM-DD");
   } else if (step === "month") {
-    date_start = moment(Date.now() - 30 * 24 * 3600 * 1000).format(
-      "YYYY-MM-DD"
-    );
+    date_start = moment(date_start).subtract(30, "days").format("YYYY-MM-DD");
   } else if (step === "year") {
-    date_start = moment(Date.now() - 365 * 24 * 3600 * 1000).format(
-      "YYYY-MM-DD"
-    );
+    date_start = moment(date_start).subtract(365, "days").format("YYYY-MM-DD");
   }
-
-  // console.log(date_start, date_end);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       fetchCallList(date_start, date_end, in_out).then((data) => {
-        console.log(data.results);
+        // console.log(data.results);
         setData(data.results);
       });
     };
 
     fetchData();
-  }, [date_start, date_end, in_out]);
-
-  // useEffect(() => {
-  //   const fetchData = async ( ) => {
-  //     setIsLoading(true);
-  //     const currentInOut = inOutByType[type];
-  //     const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
-  //     const date_start = new Date().toISOString().slice(0, 10);
-  //     const date_end = new Date().toISOString().slice(0, 10);
-
-  //     try {
-  //       const response = await fetch(
-  //         // `https://api.skilla.ru/mango/getList?${in_out}&limit=500`,
-  //         `https://api.skilla.ru/mango/getList?date_start=${date_start}&date_end=${date_end}&in_out=${in_out}`,
-  //         {
-  //           headers: {
-  //             Authorization: "Bearer testtoken",
-  //           },
-  //           method: "POST",
-  //         }
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
-  //       const jsonData = await response.json();
-  //       setData(jsonData.results);
-
-  //     } catch (error) {
-  //       setError(error.message);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   setToggleRefresh(true);
-  //   fetchData();
-  // }, [type]);
+  }, [date_start, date_end, in_out, stepper]);
 
   const handleToggleRefresh = () => {
     setToggleRefresh(!toggleRefresh);
@@ -94,6 +52,17 @@ const CallsList = () => {
   const handleRefresh = () => {
     handleToggleRefresh();
     setType("all");
+  };
+
+  const handleCallback = (value) => {
+    console.log("old", date_start);
+    if (value == "minus") {
+      moment(date_start).subtract(3, "days");
+      console.log("new", date_start, date_end);
+    } else if (value == "plus") {
+      moment(date_end).add(3, "days").format("YYYY-MM-DD");
+    }
+    console.log("new", date_start, date_end);
   };
 
   return (
@@ -110,7 +79,12 @@ const CallsList = () => {
         <div className="call-list__refresh" onClick={handleRefresh}>
           {type !== "all" && toggleRefresh ? <Refresh /> : ""}
         </div>
-        <Step step={step} options={stepTypes} onChange={setStep} />
+        <Step
+          step={step}
+          options={stepTypes}
+          onChange={setStep}
+          onStep={handleCallback}
+        />
       </div>
       <CallItems data={data} />
     </div>

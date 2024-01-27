@@ -46,6 +46,7 @@
 }
 
 
+
 .arrows:hover {
   stroke:  var(--hover-color);
   fill:  var(--hover-color);
@@ -124,6 +125,6 @@
   font-size: 14px;
 }
 
-.step__list img{
+.step__list img{  
   padding: 5px;
 }
