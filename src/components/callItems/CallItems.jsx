@@ -38,7 +38,7 @@ export default function CallItems({ data, update }) {
 
   let currentDate = null;
   let yesterdayFlag = false;
-  // console.log("currentDate", currentDate);
+
 
   return (
     <table className="table-header">

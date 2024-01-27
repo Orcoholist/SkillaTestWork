@@ -119,3 +119,11 @@
   color:  var(--hover-color) !important;  
 }
 
+.calendar-days{
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.step__list img{
+  padding: 5px;
+}

@@ -2,37 +2,33 @@ import React, { useEffect, useState } from "react";
 import { iconCalendar, arrowLeft } from "../../../assets/images";
 import "./Step.css";
 import { stepTypes } from "../../../assets/constants";
-// import DatePicker  from "react-datepicker" ;
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "../../../components/datePicker/DatePicker";
-import MyDatePicker from "../../datePicker/MyDatePicker";
+import { ru } from "date-fns/locale";
+import { format } from "date-fns";
+
+registerLocale("ru", ru);
 
 const Step = ({ step, options, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(false);
   const [stepValue, setStepValue] = useState(step);
   const [dayPickerisActive, setDayPickerisActive] = useState(false);
-  const [startDate, setStartDate] = useState("__.__.__");
-  const [endDate, setEndDate] = useState("__.__.__");
+  const [startDate, setStartDate] = useState("__.__.___");
+  const [endDate, setEndDate] = useState("__.__.___");
   const [selectedDay, setSelectedDay] = useState(undefined);
   const [selectedDays, setSelectedDays] = useState([]);
 
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const handleChange = (date) => {
-    setSelectedDate(date);
+  const handleDayStart = (date) => {
     console.log("date", date);
+    setStartDate(date.toLocaleDateString());
   };
+
+  const handleDayEnd = (date) => {
+    console.log("date", date);
+    setEndDate(date.toLocaleDateString());
+  };
+
   const toggleClass = () => {
     setActive(!active);
   };
@@ -56,22 +52,9 @@ const Step = ({ step, options, onChange }) => {
     console.log("minus" + step);
   };
 
-  const handleDatePicker = (date) => {
+  const handleDatePicker = () => {
     setDayPickerisActive(!dayPickerisActive);
-    console.log("picker", date);
-
-    setSelectedDay(date);
   };
-
-  const handleDayClick = (day, { selected }) => {
-    if (selected) {      
-      setSelectedDay(undefined);
-      return;
-    }
-    setSelectedDay(day);
-    console.log(selected);
-  };
-
 
   return (
     <div className="step">
@@ -81,18 +64,21 @@ const Step = ({ step, options, onChange }) => {
             {Object.keys(options).map((value, key) => (
               <li
                 key={key}
-                className={step === value ? "active__mode" : "" }
+                className={step === value ? "active__mode" : ""}
                 onClick={(m) => handleClick(value)}
               >
                 {stepTypes[value]}
               </li>
             ))}
             <li onClick={handleDatePicker}>Указать даты</li>
-            <li onClick={handleDatePicker}>
-              {startDate} - {endDate}{" "}
-              {selectedDate && (
+            <li>
+              <p className="calendar-days" onClick={handleDatePicker}>
+                {" "}
+                <span> {startDate} </span> - <span> {endDate} </span>
+              </p>
+              {/* {selectedDate && (
                 <p>Выбранная дата: {selectedDate.toLocaleDateString()}</p>
-              )}
+              )} */}
               <img
                 src={iconCalendar}
                 className="iconCalendar"
@@ -101,14 +87,26 @@ const Step = ({ step, options, onChange }) => {
             </li>
 
             {dayPickerisActive && (
-              //   <DatePicker startDate={startDate} endDate={endDate}
-              // />
-              // <MyDatePicker />
-              <DatePicker
-                selected={selectedDate}
-                onChange={handleChange}
-                onSubmit={handleChange}
-              />
+              <div
+                style={{ width: "50%", minWidth: "100px", maxWidth: "500px" }}
+              >
+                <DatePicker
+                  value={startDate}
+                  onChange={handleDayStart}
+                  placeholderText={startDate}
+                  isClearable={true}
+                  allowKeyboardControl={true}
+                  locale={"ru"}
+                />
+                <DatePicker
+                  value={endDate}
+                  onChange={handleDayEnd}
+                  placeholderText={endDate}
+                  isClearable={true}
+                  allowKeyboardControl={true}
+                  locale={"ru"}
+                />
+              </div>
             )}
           </ul>
         </div>
@@ -124,7 +122,11 @@ const Step = ({ step, options, onChange }) => {
           {options[step]}
         </span>
         <span className="step__items" onClick={handlePlus}>
-          <img className="arrows arrow__right" src={arrowLeft} alt="arrowRight" />
+          <img
+            className="arrows arrow__right"
+            src={arrowLeft}
+            alt="arrowRight"
+          />
         </span>
       </div>
     </div>
