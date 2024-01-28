@@ -22,29 +22,42 @@ const CallsList = () => {
   const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
 
   let date_end = moment().format("YYYY-MM-DD");
-  let date_start = moment();
+  let date_start = moment().subtract(3, "days").format("YYYY-MM-DD");
 
-  if (step === "day") {
-    date_start = moment(date_start).subtract(3, "days").format("YYYY-MM-DD");
-  } else if (step === "week") {
-    date_start = moment(date_start).subtract(7, "days").format("YYYY-MM-DD");
-  } else if (step === "month") {
-    date_start = moment(date_start).subtract(30, "days").format("YYYY-MM-DD");
-  } else if (step === "year") {
-    date_start = moment(date_start).subtract(365, "days").format("YYYY-MM-DD");
-  }
+  const [dateStart, setDateStart] = useState(
+    moment().subtract(3, "days").format("YYYY-MM-DD")
+  );
+  const [dateEnd, setDateEnd] = useState(moment().format("YYYY-MM-DD"));
+
+  const handleStep = (value) => {
+    if (step === "day") {
+      date_start = moment(date_start).subtract(3, "days").format("YYYY-MM-DD");
+    } else if (step === "week") {
+      date_start = moment(date_start).subtract(7, "days").format("YYYY-MM-DD");
+    } else if (step === "month") {
+      date_start = moment(date_start).subtract(30, "days").format("YYYY-MM-DD");
+    } else if (step === "year") {
+      date_start = moment(date_start)
+        .subtract(365, "days")
+        .format("YYYY-MM-DD");
+    }
+    setDateStart(date_start);
+    setStep(value);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      fetchCallList(date_start, date_end, in_out).then((data) => {
-        // console.log(data.results);
+      setDateStart(dateStart);
+      setDateEnd(dateEnd);
+      fetchCallList(dateStart, dateEnd, in_out).then((data) => {
+        console.log(data.results, dateStart, dateEnd, in_out);
         setData(data.results);
       });
     };
 
     fetchData();
-  }, [date_start, date_end, in_out, stepper]);
+  }, [in_out, stepper, dateStart, dateEnd]);
 
   const handleToggleRefresh = () => {
     setToggleRefresh(!toggleRefresh);
@@ -55,14 +68,34 @@ const CallsList = () => {
   };
 
   const handleCallback = (value) => {
-    console.log("old", date_start);
-    if (value == "minus") {
-      moment(date_start).subtract(3, "days");
-      console.log("new", date_start, date_end);
-    } else if (value == "plus") {
-      moment(date_end).add(3, "days").format("YYYY-MM-DD");
+    if (value === "minus") {
+      const newDateStart = moment(dateStart)
+        .subtract(3, "days")
+        .format("YYYY-MM-DD");
+      const newDateEnd = moment(dateEnd)
+        .subtract(3, "days")
+        .format("YYYY-MM-DD");
+      setDateStart(newDateStart);
+      setDateEnd(newDateEnd);
+    } else if (value === "plus") {
+      const newDateStart = moment(dateStart)
+        .add(3, "days")
+        .format("YYYY-MM-DD");
+      const newDateEnd = moment(dateEnd).add(3, "days").format("YYYY-MM-DD");
+      setDateStart(newDateStart);
+      setDateEnd(newDateEnd);
     }
-    console.log("new", date_start, date_end);
+    console.log(dateStart, dateEnd);
+  };
+
+  const pickerDayStart = (value) => {
+    setDateStart(value);
+    setDateStart(value);
+  };
+
+  const pickerDayEnd = (value) => {
+    setDateEnd(value);
+    setDateEnd(value);
   };
 
   return (
@@ -82,8 +115,10 @@ const CallsList = () => {
         <Step
           step={step}
           options={stepTypes}
-          onChange={setStep}
+          onChange={handleStep}
           onStep={handleCallback}
+          pickerDayStart={pickerDayStart}
+          pickerDayEnd={pickerDayEnd}
         />
       </div>
       <CallItems data={data} />

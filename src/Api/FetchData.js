@@ -1,7 +1,7 @@
 async function fetchCallList(date_start, date_end, in_out) {
   const baseUrl = 'https://api.skilla.ru/mango/getList'; 
   let url = `${baseUrl}?date_start=${date_start}&date_end=${date_end}&${in_out}&limit=500`; 
-
+  // console.log(date_start, date_end, in_out, url);
   try {
     const response = await fetch(url,
       // `https://api.skilla.ru/mango/getList?${in_out}&limit=500`,

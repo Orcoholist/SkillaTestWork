@@ -5,17 +5,25 @@ import { stepTypes } from "../../../assets/constants";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from "date-fns/locale";
-// import { format } from "date-fns";
+import moment from "moment";
+import { format } from "date-fns";
 
 registerLocale("ru", ru);
 
-const Step = ({ step, options, onChange , onStep}) => {
+const Step = ({
+  step,
+  options,
+  onChange,
+  onStep,
+  pickerDayStart,
+  pickerDayEnd,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState(false);
   const [stepValue, setStepValue] = useState(step);
   const [dayPickerisActive, setDayPickerisActive] = useState(false);
-  const [startDate, setStartDate] = useState("__.__.___");
-  const [endDate, setEndDate] = useState("__.__.___");
+  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
 
   const handleStep = (value) => {
     setStepValue(value);
@@ -23,13 +31,19 @@ const Step = ({ step, options, onChange , onStep}) => {
     console.log("stepValue", stepValue);
   };
   const handleDayStart = (date) => {
-    console.log("date", date);
-    setStartDate(date.toLocaleDateString());
+    const formattedDate = format(date, "yyyy-MM-dd");
+    // console.log("date", formattedDate);
+    pickerDayStart(formattedDate);
+    setStartDate(formattedDate);
+    
   };
 
-  const handleDayEnd = (date) => {
-    console.log("date", date);
-    setEndDate(date.toLocaleDateString());
+  const handleDayEnd = (date) => {  
+    // setEndDate(date.toLocaleDateString());
+    const formattedDate = format(date, "yyyy-MM-dd");
+    console.log("date", formattedDate);
+    pickerDayEnd(formattedDate);
+    setEndDate(formattedDate);
   };
 
   const toggleClass = () => {
@@ -46,14 +60,14 @@ const Step = ({ step, options, onChange , onStep}) => {
   };
 
   const handlePlus = (value) => {
-    setStepValue(value);     
+    setStepValue(value);
     onChange(step);
     onStep("plus");
   };
 
   const handleMinus = (value) => {
     setStepValue(value);
-    onChange(step);  
+    onChange(step);
     onStep("minus");
   };
 
@@ -76,7 +90,7 @@ const Step = ({ step, options, onChange , onStep}) => {
               </li>
             ))}
             <li onClick={handleDatePicker}>Указать даты</li>
-            <li>
+            <li onClick={handleDatePicker}>
               <p className="calendar-days" onClick={handleDatePicker}>
                 {" "}
                 <span> {startDate} </span> - <span> {endDate} </span>
@@ -93,7 +107,7 @@ const Step = ({ step, options, onChange , onStep}) => {
               <div>
                 <DatePicker
                   value={startDate}
-                  onChange={handleDayStart}
+                  onChange={(date) => handleDayStart(date)}
                   placeholderText={startDate}
                   isClearable={true}
                   allowKeyboardControl={true}
@@ -101,11 +115,11 @@ const Step = ({ step, options, onChange , onStep}) => {
                 />
                 <DatePicker
                   value={endDate}
-                  onChange={handleDayEnd}
+                  onChange={(date) => handleDayEnd(date)}
                   placeholderText={endDate}
                   isClearable={true}
                   allowKeyboardControl={true}
-                  locale={"ru"}
+                  locale={"ru"}              
                 />
               </div>
             )}
