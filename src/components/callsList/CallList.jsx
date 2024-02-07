@@ -7,6 +7,7 @@ import { stepTypes, types, inOutByType } from "../../assets/constants";
 import Refresh from "../UI/refresh/Refresh";
 import { fetchCallList } from "../../Api/FetchData.js";
 import moment from "moment";
+import SelType from "../UI/select/SelType.jsx";
 
 const CallsList = () => {
   const [data, setData] = useState([]);
@@ -97,11 +98,19 @@ const CallsList = () => {
     setDateEnd(value);
     setDateEnd(value);
   };
-
+console.log("ТИП", type)
   return (
     <div className="call-list">
       <div className="call-list__header">
-        <SelectType
+        {/* <SelectType
+          className="call-list__type"
+          onChange={setType}
+          value={type}
+          options={types}
+          data={data}
+          defaultValue={type}
+        /> */}
+        <SelType
           className="call-list__type"
           onChange={setType}
           value={type}
@@ -109,6 +118,9 @@ const CallsList = () => {
           data={data}
           defaultValue={type}
         />
+        <div className="call-list__refresh" onClick={handleRefresh}>
+        {type !== "all"  ? <Refresh /> : ""}
+        </div>
         <div className="call-list__refresh" onClick={handleRefresh}>
           {type !== "all" && toggleRefresh ? <Refresh /> : ""}
         </div>

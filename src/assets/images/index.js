@@ -8,6 +8,7 @@ import arrowLeft from "./arrowLeft.svg";
 import arrowRight from "./arrowRight.svg";
 import noAvatar from "./noAvatar.svg";
 import close from "./close.svg";
+import arrowDown from "./arrowDown.svg";
 
 export {
   vectorBlue,
@@ -20,4 +21,5 @@ export {
   arrowLeft,
   noAvatar,
   close,
+  arrowDown
 };

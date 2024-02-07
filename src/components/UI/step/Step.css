@@ -2,11 +2,10 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  flex-direction: row;  
+  flex-direction: row;
 }
 
 .step__description {
-  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -17,70 +16,39 @@
 .step__items {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;  
+  justify-content: space-between;
   align-items: center;
   margin: 5px;
   width: 8px;
   height: 10px;
-
 }
-.step__items:hover{
+.step__items:hover {
   cursor: pointer;
+}
+
+
+
+.filter {
+  color: var(--hover-color);
+  padding: 2px;
+}
+
+.arrows {
+  color: var(--secondary-color);
+}
+.arrows:hover{
   color: var(--hover-color);
 }
 
 
-.step__items:hover{
-  color: red;
-}
-
-.arrows:hover svg path{
-  stroke:  var(--hover-color);
-  fill: var(--hover-color);
-  transition: fill 0.3s;
-}
-
-.filter {
-  color:  var(--hover-color);;
-  padding: 2px;
-}
 
 
-
-.arrows:hover {
-  stroke:  var(--hover-color);
-  fill:  var(--hover-color);
-}
-
-
-.arrow__left:hover {
-  color:  var(--hover-color);
-  fill:  var(--hover-color);
-  stroke:  var(--hover-color);
-}
-.arrow__right:hover {
-  color:  var(--hover-color);
-  fill:  var(--hover-color);
-  stroke:  var(--hover-color);
-}
-.arrow__right {
-  transform: rotate(180deg);
-}
-.step span:active {
-  color:  var(--hover-color);
-}
-
-.step span:hover {
-  cursor: pointer;
-  color:  var(--hover-color);
-}
 
 .step__description {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-
 
 .step__list li {
   list-style-type: none;
@@ -100,7 +68,9 @@
 }
 
 .step__list {
-  position: relative;
+  position: absolute;
+  top: 10px;
+  left: 140px;
 }
 
 .step__list ul {
@@ -116,15 +86,29 @@
   padding: 0;
 }
 
-.active__mode {  
-  color:  var(--hover-color) !important;  
+.active__mode {
+  color: var(--hover-color) !important;
 }
 
-.calendar-days{
+.calendar-days {
   white-space: nowrap;
-  font-size: 13px;
+  font-size: 12px; 
 }
 
-.step__list img{  
-  padding: 5px;
+.calendar-days:hover {
+  white-space: nowrap;
+  font-size: 12px; 
+  color: var(--hover-color)
+}
+
+
+.calendar-icon:hover {
+  color: var(--hover-color);
+}
+.calendar-icon__step:hover {
+  color: var(--hover-color);
+}
+
+.calendar-icon {
+  color: var(--secondary-color);
 }
