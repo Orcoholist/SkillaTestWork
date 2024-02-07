@@ -94,7 +94,7 @@ const Step = ({
                 {" "}
                 <span> {startDate} </span> - <span> {endDate} </span>
               </p>
-             
+           
               <svg
                 className="calendar-icon__step"
                 xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +166,7 @@ const Step = ({
           />
         </svg>
         {/* </span> */}
-        <span className="filter" onClick={toggleDropdown}>
+        <span className="filter " onClick={toggleDropdown}>
           {options[step]}
         </span>
         <span className="step__items" onClick={handlePlus}>

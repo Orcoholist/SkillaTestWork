@@ -3,8 +3,8 @@ import "./SelectType.css";
 
 const SelType = ({ options, value, onChange, defaultValue }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-  console.log(value, selectedOption);
+  const [selectedOption, setSelectedOption] = useState(options["all"]);
+    console.log(value)
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleOptionClick = (value) => {
@@ -12,18 +12,24 @@ const SelType = ({ options, value, onChange, defaultValue }) => {
     setIsOpen(false);
     const key = Object.keys(options).find((key) => options[key] === value);
     onChange(key);
+    
   };
   return (
     <div className="dropdown" onClick={toggleDropdown}>
-      <div className="dropdown__button">{options[defaultValue]}</div>
+      <div
+        className={`dropdown__button
+      ${selectedOption != "Все типы" ? "active__mode" : ""}`}
+      >
+        {options[defaultValue]}
+      </div>
       {isOpen && (
         <ul className="dropdown__list">
           {Object.values(options).map((option, index) => (
             <li
               key={index}
-              className={
-                selectedOption === value ? "active__mode" : "dropdown__item"
-              }
+              className={`dropdown__item ${
+                selectedOption === option ? "active__mode" : ""
+              }`}
               onClick={() => handleOptionClick(option)}
             >
               {option}
@@ -46,25 +52,6 @@ const SelType = ({ options, value, onChange, defaultValue }) => {
         />
       </svg>
     </div>
-
-    // <select
-    //   className="select__type"
-    //   defaultValue={defaultValue}
-    //   value={value}
-    //   onChange={(event) => onChange(event.target.value)}
-    // >
-    //   {Object.keys(options).map((value) => (
-    //     <option
-    //       onClick={onChange}
-    //       defaultValue={defaultValue}
-    //       key={value}
-    //       value={value}
-    //       onChange={onChange}
-    //     >
-    //       {options[value]}
-    //     </option>
-    //   ))}
-    // </select>
   );
 };
 

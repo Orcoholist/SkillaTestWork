@@ -26,23 +26,19 @@
   cursor: pointer;
 }
 
-
-
 .filter {
   color: var(--hover-color);
   padding: 2px;
 }
-
+.filter:hover{
+  cursor: pointer;
+}
 .arrows {
   color: var(--secondary-color);
 }
-.arrows:hover{
+.arrows:hover {
   color: var(--hover-color);
 }
-
-
-
-
 
 .step__description {
   display: flex;
@@ -92,18 +88,18 @@
 
 .calendar-days {
   white-space: nowrap;
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .calendar-days:hover {
   white-space: nowrap;
-  font-size: 12px; 
-  color: var(--hover-color)
+  font-size: 12px;
+  color: var(--hover-color);
 }
-
 
 .calendar-icon:hover {
   color: var(--hover-color);
+  cursor: pointer;
 }
 .calendar-icon__step:hover {
   color: var(--hover-color);

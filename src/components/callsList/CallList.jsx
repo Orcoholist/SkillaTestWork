@@ -17,7 +17,6 @@ const CallsList = () => {
   const [toggleRefresh, setToggleRefresh] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const currentInOut = inOutByType[type];
   const in_out = currentInOut !== null ? `in_out=${currentInOut}` : "";
@@ -52,7 +51,7 @@ const CallsList = () => {
       setDateStart(dateStart);
       setDateEnd(dateEnd);
       fetchCallList(dateStart, dateEnd, in_out).then((data) => {
-        console.log(data.results, dateStart, dateEnd, in_out);
+        // console.log(data.results, dateStart, dateEnd, in_out);
         setData(data.results);
       });
     };
@@ -60,11 +59,8 @@ const CallsList = () => {
     fetchData();
   }, [in_out, stepper, dateStart, dateEnd]);
 
-  const handleToggleRefresh = () => {
-    setToggleRefresh(!toggleRefresh);
-  };
   const handleRefresh = () => {
-    handleToggleRefresh();
+    setToggleRefresh(!toggleRefresh);
     setType("all");
   };
 
@@ -86,7 +82,7 @@ const CallsList = () => {
       setDateStart(newDateStart);
       setDateEnd(newDateEnd);
     }
-    console.log(dateStart, dateEnd);
+    // console.log(dateStart, dateEnd);
   };
 
   const pickerDayStart = (value) => {
@@ -98,7 +94,7 @@ const CallsList = () => {
     setDateEnd(value);
     setDateEnd(value);
   };
-console.log("ТИП", type)
+
   return (
     <div className="call-list">
       <div className="call-list__header">
@@ -119,10 +115,7 @@ console.log("ТИП", type)
           defaultValue={type}
         />
         <div className="call-list__refresh" onClick={handleRefresh}>
-        {type !== "all"  ? <Refresh /> : ""}
-        </div>
-        <div className="call-list__refresh" onClick={handleRefresh}>
-          {type !== "all" && toggleRefresh ? <Refresh /> : ""}
+          {type !== "all" ? <Refresh /> : ""}
         </div>
         <Step
           step={step}
